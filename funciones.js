@@ -1,5 +1,7 @@
 const magazine = document.querySelector('.magazine');
 const pages = document.querySelectorAll('.page');
+const navIndicator = document.getElementById('navIndicator');
+const navText = document.getElementById('navText');
 
 let currentPage = 0;
 
@@ -38,3 +40,27 @@ magazine.addEventListener('click', (e) => {
 
 // Mostrar la primera página al cargar
 updatePages();
+
+function updatePages() {
+    pages.forEach((page, index) => {
+        page.classList.remove('active', 'previous', 'next', 'hidden');
+
+        if (index < currentPage) {
+            page.classList.add('previous');
+        } else if (index === currentPage) {
+            page.classList.add('active');
+        } else {
+            page.classList.add('next');
+        }
+    });
+
+    // ===== LÓGICA DEL INDICADOR =====
+    if (currentPage === 0) {
+        navText.innerHTML = "Siguiente ▶";
+    } else {
+        navText.innerHTML = "◀ Anterior";
+    }
+
+    navIndicator.classList.add("mostrar");
+
+}
