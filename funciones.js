@@ -1,66 +1,57 @@
 const magazine = document.querySelector('.magazine');
 const pages = document.querySelectorAll('.page');
-const navIndicator = document.getElementById('navIndicator');
-const navText = document.getElementById('navText');
+
+const btnAnterior = document.getElementById('btnAnterior');
+const btnSiguiente = document.getElementById('btnSiguiente');
 
 let currentPage = 0;
 
 function updatePages() {
+
     pages.forEach((page, index) => {
-        page.classList.remove('active', 'previous', 'next', 'hidden');
-        if (index < currentPage) {
-            page.classList.add('previous'); // Página volteada hacia atrás
-        } else if (index === currentPage) {
-            page.classList.add('active'); // Página actual
-        } else {
-            page.classList.add('next'); // Página lista para ser volteada
-        }
-    });
-}
-
-magazine.addEventListener('click', (e) => {
-    const { clientX } = e;
-    const magazineWidth = magazine.offsetWidth;
-    const magazineLeft = magazine.getBoundingClientRect().left;
-
-    if (clientX < magazineLeft + magazineWidth / 2) {
-        // Clic en la izquierda: retroceder
-        if (currentPage > 0) {
-            currentPage--;
-        }
-    } else {
-        // Clic en la derecha: avanzar
-        if (currentPage < pages.length - 1) {
-            currentPage++;
-        }
-    }
-
-    updatePages();
-});
-
-// Mostrar la primera página al cargar
-updatePages();
-
-function updatePages() {
-    pages.forEach((page, index) => {
-        page.classList.remove('active', 'previous', 'next', 'hidden');
+        page.classList.remove('active', 'previous', 'next');
 
         if (index < currentPage) {
             page.classList.add('previous');
-        } else if (index === currentPage) {
+        } 
+        else if (index === currentPage) {
             page.classList.add('active');
-        } else {
+        } 
+        else {
             page.classList.add('next');
         }
     });
 
-    // ===== LÓGICA DEL INDICADOR =====
+    // CONTROL DE BOTONES
     if (currentPage === 0) {
-        navText.innerHTML = "Siguiente ▶";
-    } else {
-        navText.innerHTML = "◀ Anterior";
+        btnAnterior.style.display = "none";
+        btnSiguiente.style.display = "inline-block";
+    } 
+    else if (currentPage === pages.length - 1) {
+        btnAnterior.style.display = "inline-block";
+        btnSiguiente.style.display = "none";
+    } 
+    else {
+        btnAnterior.style.display = "inline-block";
+        btnSiguiente.style.display = "inline-block";
     }
-
-    navIndicator.classList.add("mostrar");
-
 }
+
+// BOTÓN SIGUIENTE
+btnSiguiente.addEventListener("click", () => {
+    if (currentPage < pages.length - 1) {
+        currentPage++;
+        updatePages();
+    }
+});
+
+// BOTÓN ANTERIOR
+btnAnterior.addEventListener("click", () => {
+    if (currentPage > 0) {
+        currentPage--;
+        updatePages();
+    }
+});
+
+// Mostrar primera página
+updatePages();
